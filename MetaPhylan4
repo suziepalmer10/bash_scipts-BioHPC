@@ -1,0 +1,58 @@
+!/bin/bash
+SBATCH --job-name=serialJob                              # job name
+SBATCH --partition=256                               # select partion from 128GB, 256GB, 384GB, GPU and super
+SBATCH --nodes=1                                         # number of nodes requested by user
+SBATCH --time=3-00:00:00                                 # run time, format: D-H:M:S (max wallclock time)
+SBATCH --output=serialJob.%j.out                         # standard output file name
+SBATCH --error=serialJob.%j.time                         # standard error output file name
+SBATCH --mail-user=suzette.palmer@utsouthwestern.edu           # specify an email address
+SBATCH --mail-type=ALL                                   # send email when job status change (start, end, abortion and etc.)
+
+
+
+#!/bin/bash
+#
+# CREATED USING THE BIOHPC PORTAL on Thu Feb 14 2023 12:26:42 GMT-0600 (Central Standard Time)
+#
+# This file is batch script used to run commands on the BioHPC cluster.
+# The script is submitted to the cluster using the SLURM `sbatch` command.
+# Lines starting with # are comments, and will not be run.
+# Lines starting with #SBATCH specify options for the scheduler.
+# Lines that do not start with # or #SBATCH are commands that will run.
+
+
+# Name for the job that will be visible in the job queue and accounting tools.
+SBATCH --job-name meta-4
+
+# Number of nodes required to run this job
+SBATCH -N 1
+
+# Time limit for the job in the format Days-H:M:S
+# A job that reaches its time limit will be cancelled.
+# Specify an accurate time limit for efficient scheduling so your job runs promptly.
+SBATCH -t 03-0:0:0
+
+# The standard output and errors from commands will be written to these files.
+# %j in the filename will be replace with the job number when it is submitted.
+SBATCH -o job_%j.out
+SBATCH -e job_%j.err
+
+# Send an email when the job status changes, to the specfied address.
+SBATCH --mail-type ALL
+SBATCH --mail-user suzette.palmer@utsouthwestern.edu
+
+module add python/3.8.x-anaconda
+Conda load bowtie2
+conda activate mpa
+#conda install tbb=2020.2
+
+cd /archive/PCDC/PCDC_Core/shared/koh.data.20220610/batch1/F22FTSUSAT0053_MOUjmsaM/soapnuke/clean/
+
+for d in */ ; do
+    cd d
+    metaphlan *_1.fq.gz,*2.fq.gz --bowtie2out ${d}metagenome.bowtie2.bz2 --nproc 5 --input_type fastq -o ${d}-profiled_metagenome.txt
+	cd..
+done
+
+
+# END OF SCRIPT
