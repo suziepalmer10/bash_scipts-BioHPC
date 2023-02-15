@@ -8,27 +8,14 @@
   #SBATCH --mail-user=suzette.palmer@utsouthwestern.edu           # specify an email address
   #SBATCH --mail-type=ALL                                   # send email when job status change (start, end, abortion and etc.)
 
-  module add matlab/2014b                                   # load software package
-
-  matlab -nodisplay -nodesktop -nosplash < script.m         # execute program
   
 module add python/3.8.x-anaconda
-conda load bowtie2
+module add bowtie2
 conda activate mpa
-#conda install tbb=2020.2
 
-cd /archive/PCDC/PCDC_Core/shared/koh.data.20220610/batch1/F22FTSUSAT0053_MOUjmsaM/soapnuke/clean/
-
-for d in */ ; do
-    cd d
-    metaphlan *_1.fq.gz,*2.fq.gz --bowtie2out ${d}metagenome.bowtie2.bz2 --nproc 5 --input_type fastq -o ${d}-profiled_metagenome.txt
-	cd..
-done
-  
-for dir in /archive/PCDC/PCDC_Core/shared/koh.data.20220610/batch1/F22FTSUSAT0053_MOUjmsaM/soapnuke/clean/
-do
-    file1 = *_1.fq.gz
-    file2 = *_2.fq.gz
-    metaphlan file1,file1 --bowtie2out ${dir}metagenome.bowtie2.bz2 --nproc 5 --input_type fastq -o ${dir}-profiled_metagenome.txt
-    
+ 
+for dir in /archive/PCDC/PCDC_Core/shared/koh.data.20220610/batch1/F22FTSUSAT0053_MOUjmsaM/soapnuke/clean/; do
+    cd dir
+    metaphlan *_1.fq.gz,*_2.fq.gz --bowtie2out ${dir}_metagenome.bowtie2.bz2 --nproc 5 --input_type fastq -o ${dir}_profiled_metagenome.txt
+    cd ..
 done
