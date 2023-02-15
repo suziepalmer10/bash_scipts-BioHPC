@@ -1,3 +1,4 @@
+#Proper installation on UTSW BioHPC cluster
 module load python/3.8.x-anaconda
 conda config --add channels defaults
 conda config --add channels bioconda
@@ -9,4 +10,8 @@ conda create --name mpa -c conda-forge -c bioconda python=3.7 metaphlan
 
 #show conda channels
 conda config --show channels
+#this will install the databases
+metaphlan --install
+#Note: if you get an error - "database already installed", delete the *bt2.md5 and *bt2.tar files and then run again
+
 
