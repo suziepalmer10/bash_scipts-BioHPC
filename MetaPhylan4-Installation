@@ -14,4 +14,7 @@ conda config --show channels
 metaphlan --install
 #Note: if you get an error - "database already installed", delete the *bt2.md5 and *bt2.tar files and then run again
 
+#create a symbolic link to run these through snake make
+#cd to desired output directory
 
+cp -s /archive/PCDC/PCDC_Core/shared/koh.data.20220610/batch1/F22FTSUSAT0053_MOUjmsaM/soapnuke/clean/Koh_*/Koh_*gz 
