@@ -16,6 +16,7 @@ module add python/3.8.x-anaconda
 module add bowtie2
 conda activate mpa
 
-cd /work/PCDC/s180020/Candida_data/
-snakemake
+cd /work/PCDC/s180020
+#this runs similar to a docker, creating the conda environment from the .yaml file. 
+snakemake -j 12 --cluster sbatch --use-conda --conda-frontend mamba
 
